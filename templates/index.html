@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindScroll — Seberapa Mindless Kamu?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="page-wrap">
+
+        <header class="site-header">
+            <div class="logo">
+                <span class="logo-icon">📱</span>
+                <span class="logo-text">MindScroll</span>
+            </div>
+            <div class="header-tag">Decision Tree Classifier</div>
+        </header>
+
+        <nav class="header-nav header-nav-top">
+            <span class="nav-greet">Hai, {{ current_user.username }}!</span>
+            <a href="{{ url_for('riwayat') }}" class="nav-link">Riwayat Saya</a>
+            <a href="{{ url_for('logout') }}" class="nav-link nav-logout">Keluar</a>
+        </nav>
+
+        <main class="hero-section">
+            <div class="hero-eyebrow">Uji Dirimu Sekarang</div>
+            <h1 class="hero-title">
+                Seberapa<br>
+                <em class="title-accent">Mindless</em><br>
+                Scrolling-mu?
+            </h1>
+            <p class="hero-sub">
+                Jawab <strong>{{ questions|length }} pertanyaan</strong> singkat dengan jujur.
+                Sistem akan mengklasifikasikan tingkat <em>mindless scrolling</em> kamu
+                saat menggunakan TikTok menggunakan algoritma <strong>Decision Tree</strong>.
+            </p>
+            <div class="scroll-cue">
+                <span>Mulai scroll ke bawah</span>
+                <div class="cue-arrow">↓</div>
+            </div>
+        </main>
+
+        {% if error %}
+        <div class="alert-error">
+            <span>⚠️</span> {{ error }}
+        </div>
+        {% endif %}
+
+        <form action="/predict" method="POST" id="mainForm">
+            <section class="questions-section">
+                {% for q in questions %}
+                <div class="q-block" data-index="{{ loop.index0 }}" data-type="{{ q.type }}">
+                    <div class="q-meta">
+                        <span class="q-num">{{ '%02d'|format(loop.index) }}</span>
+                        <span class="q-of">/ {{ '%02d'|format(questions|length) }}</span>
+                    </div>
+                    <p class="q-text">{{ q.text }}</p>
+
+                    {% if q.type == 'menit' %}
+                    <div class="menit-wrap">
+                        <div class="menit-input-row">
+                            <input type="number" name="{{ q.id }}" id="{{ q.id }}"
+                                   min="1" max="999" placeholder="Contoh: 45"
+                                   class="menit-input" required>
+                            <span class="menit-unit">menit</span>
+                        </div>
+                        <div class="menit-hint">
+                            <span>1–5 mnt → skor 1</span>
+                            <span>6–15 mnt → skor 2</span>
+                            <span>16–30 mnt → skor 3</span>
+                            <span>31–60 mnt → skor 4</span>
+                            <span>&gt;60 mnt → skor 5</span>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="likert-row">
+                        <span class="likert-anchor anchor-left">Sangat<br>Tidak Setuju</span>
+                        <div class="likert-pills">
+                            {% for opt in options %}
+                            <label class="pill-label">
+                                <input type="radio" name="{{ q.id }}" value="{{ opt.value }}" required>
+                                <span class="pill">{{ opt.value }}</span>
+                            </label>
+                            {% endfor %}
+                        </div>
+                        <span class="likert-anchor anchor-right">Sangat<br>Setuju</span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+
+            <div class="submit-zone">
+                <div class="progress-wrap">
+                    <div class="progress-label">
+                        <span id="doneCount">0</span> dari {{ questions|length }} dijawab
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+                <button type="submit" class="cta-btn" id="submitBtn">
+                    Klasifikasikan Sekarang
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindScroll — Daftar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="auth-split">
+
+        <!-- Panel Kiri -->
+        <div class="auth-left">
+            <div class="auth-left-inner">
+                <div class="auth-brand">
+                    <span class="logo-icon">📱</span>
+                    <span class="logo-text">MindScroll</span>
+                </div>
+                <h1 class="auth-left-title">
+                    Mulai Perjalanan<br>
+                    Menuju Kebiasaan<br>
+                    <span class="auth-left-accent">Digital yang Sehat.</span>
+                </h1>
+                <p class="auth-left-desc">
+                    Buat akun gratis dan temukan seberapa dalam kamu terjebak dalam pola
+                    <em>mindless scrolling</em>. Hasil klasifikasi tersimpan otomatis —
+                    pantau perkembanganmu dari waktu ke waktu.
+                </p>
+                <div class="auth-left-features">
+                    <div class="feat-item">✅ Gratis & tanpa biaya</div>
+                    <div class="feat-item">✅ Hasil tersimpan otomatis</div>
+                    <div class="feat-item">✅ Lihat riwayat kapan saja</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Kanan (Form) -->
+        <div class="auth-right">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <span class="logo-icon">📱</span>
+                    <span class="logo-text">MindScroll</span>
+                </div>
+                <h2 class="auth-title">Daftar Akun</h2>
+                <p class="auth-sub">Buat akun untuk menyimpan riwayat hasil klasifikasi kamu.</p>
+
+                {% if error %}
+                <div class="alert-error"><span>⚠️</span> {{ error }}</div>
+                {% endif %}
+
+                <form method="POST" class="auth-form">
+                    <label class="auth-label">Username</label>
+                    <input type="text" name="username" class="auth-input" placeholder="Minimal 5 karakter" required autofocus>
+
+                    <label class="auth-label">Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="password" id="password" class="auth-input" placeholder="Minimal 6 karakter, huruf & angka" required>
+                        <span class="toggle-pw" onclick="togglePw('password')">👁️</span>
+                    </div>
+
+                    <label class="auth-label">Konfirmasi Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="confirm_password" id="confirm_password" class="auth-input" placeholder="Ulangi password" required>
+                        <span class="toggle-pw" onclick="togglePw('confirm_password')">👁️</span>
+                    </div>
+
+                    <button type="submit" class="cta-btn auth-btn">Daftar Sekarang</button>
+                </form>
+
+                <p class="auth-footer">
+                    Sudah punya akun? <a href="{{ url_for('login') }}">Masuk di sini</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+    function togglePw(id) {
+        const inp = document.getElementById(id);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+    </script>
+</body>
+</html>

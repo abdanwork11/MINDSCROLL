@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindScroll — Riwayat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="page-wrap">
+
+        <header class="site-header">
+            <div class="logo">
+                <span class="logo-icon">📱</span>
+                <span class="logo-text">MindScroll</span>
+            </div>
+            <nav class="header-nav">
+                <a href="{{ url_for('index') }}" class="nav-link">Kuesioner Baru</a>
+                <a href="{{ url_for('logout') }}" class="nav-link nav-logout">Keluar</a>
+            </nav>
+        </header>
+
+        <section class="hero-section" style="padding-bottom: 2.5rem;">
+            <div class="hero-eyebrow">Riwayat Kamu</div>
+            <h1 class="hero-title" style="font-size: clamp(2.8rem, 8vw, 4.5rem);">
+                Histori <span class="title-accent">Klasifikasi</span>
+            </h1>
+            <p class="hero-sub">Semua hasil klasifikasi mindless scrolling yang pernah kamu kerjakan.</p>
+        </section>
+
+        {% if history|length == 0 %}
+        <div class="empty-state">
+            <p>Kamu belum pernah mengisi kuesioner.</p>
+            <a href="{{ url_for('index') }}" class="cta-btn" style="margin-top: 1.2rem; display: inline-flex;">
+                Isi Kuesioner Sekarang
+            </a>
+        </div>
+        {% else %}
+        <div class="history-list">
+            {% for h in history %}
+            <div class="history-card history-{{ label_info[h.label]['color'] }}">
+                <div class="history-top">
+                    <span class="history-label">{{ h.label }}</span>
+                    <span class="history-date">{{ h.created_at| wib }}</span>
+                </div>
+                <div class="history-score">Total Skor: <strong>{{ h.total_skor }} / 80</strong></div>
+                {% if h.menit_asli %}
+                <div class="history-meta">Durasi sekali buka TikTok: {{ h.menit_asli }} menit</div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

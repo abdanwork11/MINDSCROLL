@@ -1,0 +1,9 @@
+flask
+flask-sqlalchemy
+flask-login
+scikit-learn
+pandas
+numpy
+joblib
+gunicorn
+pymysql

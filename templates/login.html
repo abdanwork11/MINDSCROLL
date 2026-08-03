@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindScroll — Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <div class="auth-split">
+
+        <!-- Panel Kiri -->
+        <div class="auth-left">
+            <div class="auth-left-inner">
+                <div class="auth-brand">
+                    <span class="logo-icon">📱</span>
+                    <span class="logo-text">MindScroll</span>
+                </div>
+                <h1 class="auth-left-title">
+                    Sadari Kebiasaan<br>
+                    <span class="auth-left-accent">Scrolling-mu</span><br>
+                    Sebelum Terlambat.
+                </h1>
+                <p class="auth-left-desc">
+                    Tanpa sadar, kamu mungkin sudah menghabiskan berjam-jam scrolling TikTok tanpa tujuan.
+                    MindScroll hadir untuk membantu kamu mengenali pola kebiasaan digitalmu
+                    dengan teknologi <strong>Decision Tree</strong>.
+                </p>
+                <div class="auth-left-stats">
+                    <div class="stat-item">
+                        <span class="stat-num">16</span>
+                        <span class="stat-label">Pertanyaan</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num">3</span>
+                        <span class="stat-label">Tingkat Klasifikasi</span>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <span class="stat-num">&lt;5m</span>
+                        <span class="stat-label">Waktu Pengisian</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel Kanan (Form) -->
+        <div class="auth-right">
+            <div class="auth-card">
+                <div class="auth-logo">
+                    <span class="logo-icon">📱</span>
+                    <span class="logo-text">MindScroll</span>
+                </div>
+                <h2 class="auth-title">Masuk</h2>
+                <p class="auth-sub">Login untuk mulai mengukur tingkat mindless scrolling kamu.</p>
+
+                {% if error %}
+                <div class="alert-error"><span>⚠️</span> {{ error }}</div>
+                {% endif %}
+
+                <form method="POST" class="auth-form">
+                    <label class="auth-label">Username</label>
+                    <input type="text" name="username" class="auth-input" placeholder="Masukkan username" required autofocus>
+
+                    <label class="auth-label">Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="password" id="password" class="auth-input" placeholder="Masukkan password" required>
+                        <span class="toggle-pw" onclick="togglePw('password')">👁️</span>
+                    </div>
+
+                    <button type="submit" class="cta-btn auth-btn">Masuk</button>
+                </form>
+
+                <p class="auth-footer">
+                    Belum punya akun? <a href="{{ url_for('register') }}">Daftar di sini</a>
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+    function togglePw(id) {
+        const inp = document.getElementById(id);
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+    }
+    </script>
+</body>
+</html>
